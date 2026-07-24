@@ -1,0 +1,287 @@
+openapi: 3.0.0
+info:
+  title: LeadFlow CRM API
+  description: REST API for LeadFlow CRM - Lead Management System
+  version: 1.0.0
+  contact:
+    name: Digital Heroes
+    url: https://digitalheroesco.com
+
+servers:
+  - url: http://localhost:5000/api
+    description: Development
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        _id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+        role: { type: string, enum: [admin, member] }
+        status: { type: string, enum: [active, inactive, disabled] }
+        createdAt: { type: string, format: date-time }
+
+    Lead:
+      type: object
+      properties:
+        _id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        phone: { type: string }
+        company: { type: string }
+        status: { type: string, enum: [new, contacted, qualified, proposal_sent, negotiation, won, lost, archived] }
+        priority: { type: string, enum: [low, medium, high, urgent] }
+        source: { type: string, enum: [website, referral, social_media, advertisement, cold_call, email, other] }
+        assignedTo: { type: string }
+        budget: { type: number }
+        industry: { type: string }
+        country: { type: string }
+        createdBy: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    Note:
+      type: object
+      properties:
+        _id: { type: string }
+        leadId: { type: string }
+        userId: { type: string }
+        message: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    Activity:
+      type: object
+      properties:
+        _id: { type: string }
+        leadId: { type: string }
+        action: { type: string }
+        performedBy: { type: string }
+        details: { type: string }
+        createdAt: { type: string, format: date-time }
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 6 }
+      responses:
+        '201':
+          description: User registered
+
+  /auth/login:
+    post:
+      summary: Login
+      tags: [Auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: Login successful
+
+  /auth/me:
+    get:
+      summary: Get current user
+      tags: [Auth]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: User profile
+
+  /users:
+    get:
+      summary: Get all users (Admin)
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+        - { name: search, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: List of users
+    post:
+      summary: Create user (Admin)
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+
+  /leads:
+    get:
+      summary: Get all leads
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+        - { name: search, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { type: string } }
+        - { name: priority, in: query, schema: { type: string } }
+        - { name: source, in: query, schema: { type: string } }
+        - { name: sortBy, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: List of leads
+    post:
+      summary: Create lead
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '201':
+          description: Lead created
+
+  /leads/{id}:
+    get:
+      summary: Get lead by ID
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Lead details
+    put:
+      summary: Update lead
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Lead updated
+    delete:
+      summary: Delete lead (Admin)
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Lead deleted
+
+  /leads/status:
+    patch:
+      summary: Update lead status
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [leadId, status]
+              properties:
+                leadId: { type: string }
+                status: { type: string }
+      responses:
+        '200':
+          description: Status updated
+
+  /leads/assign:
+    patch:
+      summary: Assign lead (Admin)
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [leadId, assignedTo]
+              properties:
+                leadId: { type: string }
+                assignedTo: { type: string }
+      responses:
+        '200':
+          description: Lead assigned
+
+  /leads/pipeline:
+    get:
+      summary: Get pipeline data
+      tags: [Leads]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Pipeline stats
+
+  /dashboard:
+    get:
+      summary: Get dashboard data
+      tags: [Dashboard]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Dashboard statistics
+
+  /notes:
+    get:
+      summary: Get notes
+      tags: [Notes]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: leadId, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: List of notes
+    post:
+      summary: Create note
+      tags: [Notes]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [leadId, message]
+              properties:
+                leadId: { type: string }
+                message: { type: string }
+      responses:
+        '201':
+          description: Note created
+
+  /activities:
+    get:
+      summary: Get activities
+      tags: [Activities]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: leadId, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: List of activities
