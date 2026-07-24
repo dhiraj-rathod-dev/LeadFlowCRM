@@ -76,6 +76,7 @@ exports.getLead = async (req, res, next) => {
 exports.createLead = async (req, res, next) => {
   try {
     const leadData = { ...req.body, createdBy: req.user.id };
+    if (!leadData.assignedTo || !isValidObjectId(leadData.assignedTo)) delete leadData.assignedTo;
     const lead = await Lead.create(leadData);
     await Activity.create({
       leadId: lead._id,
@@ -97,7 +98,11 @@ exports.updateLead = async (req, res, next) => {
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ error: 'Lead not found' });
     const oldStatus = lead.status;
-    Object.assign(lead, req.body);
+    const updateData = { ...req.body };
+    if (updateData.assignedTo !== undefined && (!updateData.assignedTo || !isValidObjectId(updateData.assignedTo))) {
+      updateData.assignedTo = null;
+    }
+    Object.assign(lead, updateData);
     await lead.save();
     const changes = [];
     for (const key of Object.keys(req.body)) {
