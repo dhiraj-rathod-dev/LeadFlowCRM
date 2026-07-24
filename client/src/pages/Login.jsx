@@ -86,6 +86,9 @@ const Login = () => {
           <p className="text-center text-sm text-gray-500 mt-6">
             Don't have an account? <Link to="/register" className="text-primary-600 hover:text-primary-700 font-semibold">Create one</Link>
           </p>
+          <p className="text-center text-sm text-gray-500 mt-2">
+            <Link to="/" className="text-primary-600 hover:text-primary-700 font-semibold">Contact Us</Link> — Not a user yet? Submit an inquiry.
+          </p>
           <div className="mt-8 p-4 bg-gray-50 rounded-xl dark:bg-dark-800">
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Demo Credentials:</p>
             <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">

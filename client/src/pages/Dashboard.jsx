@@ -166,9 +166,6 @@ const Dashboard = () => {
         </div>
       )}
 
-      <footer className="text-center py-4 text-sm text-gray-400">
-        Built for <a href="https://digitalheroesco.com" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:text-primary-600 font-medium">Digital Heroes</a> Training Task
-      </footer>
     </div>
   );
 };

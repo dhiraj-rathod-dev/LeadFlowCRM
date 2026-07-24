@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/api/', limiter);
 }
 
+app.use('/api/public', require('./routes/public'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/leads', require('./routes/leads'));

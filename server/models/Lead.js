@@ -25,7 +25,7 @@ const LeadSchema = new mongoose.Schema({
   website: { type: String, trim: true, default: '' },
   description: { type: String, trim: true, default: '' },
   tags: [{ type: String, trim: true }],
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   isArchived: { type: Boolean, default: false }
 }, { timestamps: true });
 

@@ -9,13 +9,14 @@ afterAll(async () => {
 
 describe('Auth API', () => {
   let token;
-  const testUser = { name: 'Test User', email: 'test@test.com', password: 'password123' };
+  const testEmail = `testuser_${Date.now()}@test.com`;
+  const testUser = { name: 'Test User', email: testEmail, password: 'password123' };
 
   it('should register a new user', async () => {
-    const res = await request(app).post('/api/auth/register').send(testUser);
+    const res = await request(app).post('/api/auth/register').send({ ...testUser, role: 'admin' });
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('token');
-    expect(res.body.user).toHaveProperty('email', testUser.email);
+    expect(res.body.user).toHaveProperty('email', testEmail);
     token = res.body.token;
   });
 
@@ -25,20 +26,21 @@ describe('Auth API', () => {
   });
 
   it('should login with valid credentials', async () => {
-    const res = await request(app).post('/api/auth/login').send({ email: testUser.email, password: testUser.password });
+    const res = await request(app).post('/api/auth/login').send({ email: testEmail, password: 'password123' });
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('token');
+    token = res.body.token;
   });
 
   it('should not login with wrong password', async () => {
-    const res = await request(app).post('/api/auth/login').send({ email: testUser.email, password: 'wrong' });
+    const res = await request(app).post('/api/auth/login').send({ email: testEmail, password: 'wrong' });
     expect(res.statusCode).toBe(401);
   });
 
   it('should get current user profile', async () => {
     const res = await request(app).get('/api/auth/me').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(200);
-    expect(res.body.user).toHaveProperty('email', testUser.email);
+    expect(res.body.user).toHaveProperty('email', testEmail);
   });
 });
 
@@ -47,7 +49,7 @@ describe('Leads API', () => {
   let leadId;
 
   beforeAll(async () => {
-    const res = await request(app).post('/api/auth/login').send({ email: 'test@test.com', password: 'password123' });
+    const res = await request(app).post('/api/auth/login').send({ email: 'admin@leadflow.com', password: 'admin123' });
     token = res.body.token;
   });
 
@@ -90,7 +92,7 @@ describe('Dashboard API', () => {
   let token;
 
   beforeAll(async () => {
-    const res = await request(app).post('/api/auth/login').send({ email: 'test@test.com', password: 'password123' });
+    const res = await request(app).post('/api/auth/login').send({ email: 'admin@leadflow.com', password: 'admin123' });
     token = res.body.token;
   });
 
@@ -99,5 +101,23 @@ describe('Dashboard API', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('stats');
     expect(res.body.stats).toHaveProperty('totalLeads');
+  });
+});
+
+describe('Public API', () => {
+  it('should capture a lead via public form', async () => {
+    const res = await request(app).post('/api/public/capture').send({
+      name: 'Public Lead',
+      email: 'public@test.com',
+      company: 'Public Co',
+      message: 'Interested in your product'
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty('leadId');
+  });
+
+  it('should reject capture without required fields', async () => {
+    const res = await request(app).post('/api/public/capture').send({ name: 'No Email' });
+    expect(res.statusCode).toBe(400);
   });
 });
