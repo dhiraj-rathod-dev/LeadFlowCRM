@@ -1,6 +1,9 @@
+const mongoose = require('mongoose');
 const Lead = require('../models/Lead');
 const Note = require('../models/Note');
 const Activity = require('../models/Activity');
+
+const isValidObjectId = (id) => id && mongoose.Types.ObjectId.isValid(id);
 
 exports.getLeads = async (req, res, next) => {
   try {
@@ -11,25 +14,28 @@ exports.getLeads = async (req, res, next) => {
     } = req.query;
     const query = {};
     if (req.user.role === 'member') {
-      query.$or = [{ assignedTo: req.user.id }, { createdBy: req.user.id }];
+      const userId = new mongoose.Types.ObjectId(req.user.id);
+      query.$or = [{ assignedTo: userId }, { createdBy: userId }];
     }
     if (search) {
-      query.$and = query.$or ? [query, { $or: [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-        { phone: { $regex: search, $options: 'i' } }
-      ]}] : { $or: [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-        { phone: { $regex: search, $options: 'i' } }
+      const searchRegex = { $regex: search, $options: 'i' };
+      const searchCondition = { $or: [
+        { name: searchRegex },
+        { email: searchRegex },
+        { company: searchRegex },
+        { phone: searchRegex }
       ]};
+      if (query.$or) {
+        query.$and = [{ $or: query.$or }, searchCondition];
+        delete query.$or;
+      } else {
+        query.$or = searchCondition.$or;
+      }
     }
     if (status) query.status = status;
     if (priority) query.priority = priority;
     if (source) query.source = source;
-    if (assignedTo) query.assignedTo = assignedTo;
+    if (assignedTo && isValidObjectId(assignedTo)) query.assignedTo = new mongoose.Types.ObjectId(assignedTo);
     if (country) query.country = { $regex: country, $options: 'i' };
     if (industry) query.industry = { $regex: industry, $options: 'i' };
     if (isArchived !== undefined) query.isArchived = isArchived === 'true';
@@ -162,7 +168,7 @@ exports.assignLead = async (req, res, next) => {
     const { leadId, assignedTo } = req.body;
     const lead = await Lead.findById(leadId);
     if (!lead) return res.status(404).json({ error: 'Lead not found' });
-    lead.assignedTo = assignedTo;
+    lead.assignedTo = assignedTo && isValidObjectId(assignedTo) ? assignedTo : null;
     await lead.save();
     const populated = await Lead.findById(lead._id).populate('assignedTo', 'name email');
     await Activity.create({
