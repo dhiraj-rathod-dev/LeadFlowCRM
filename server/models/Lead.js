@@ -16,7 +16,7 @@ const LeadSchema = new mongoose.Schema({
     enum: ['website', 'referral', 'social_media', 'advertisement', 'cold_call', 'email', 'other'],
     default: 'website'
   },
-  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, set: function(v) { return (v === '' || v === undefined || v === null) ? null : v; } },
   budget: { type: Number, default: 0, min: 0 },
   industry: { type: String, trim: true, default: '' },
   country: { type: String, trim: true, default: '' },
@@ -36,5 +36,10 @@ LeadSchema.index({ createdBy: 1 });
 LeadSchema.index({ createdAt: -1 });
 LeadSchema.index({ priority: 1 });
 LeadSchema.index({ source: 1 });
+
+LeadSchema.pre('validate', function(next) {
+  if (this.assignedTo === '' || this.assignedTo === undefined) this.assignedTo = null;
+  next();
+});
 
 module.exports = mongoose.model('Lead', LeadSchema);
