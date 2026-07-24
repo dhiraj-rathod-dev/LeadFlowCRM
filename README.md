@@ -1,180 +1,463 @@
-# LeadFlow CRM
+# 🚀 LeadFlow CRM
 
-> Full Stack Development Qualification Project for **Digital Heroes**
+> A Full Stack Lead Management CRM built for the **Digital Heroes Full Stack Development Qualification Project**.
 
-A production-ready Lead Management CRM that enables organizations to collect, organize, assign, and manage sales leads efficiently.
+🌐 **Live Demo:** https://lead-flow-crm-amber.vercel.app/login
 
-## Tech Stack
+---
+
+# 📌 Overview
+
+LeadFlow CRM is a modern Lead Management System that helps organizations collect, organize, assign, and manage sales leads efficiently.
+
+The application includes secure authentication, role-based access control, lead tracking, dashboards, Kanban pipeline management, notes, activity logs, analytics, and responsive UI.
+
+---
+
+# 🌐 Live Demo
+
+### Frontend
+
+🔗 https://lead-flow-crm-amber.vercel.app/login
+
+### Backend API
+
+🔗 https://leadflowcrm-23l8.onrender.com/
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication
+
+- User Registration
+- Secure Login
+- JWT Authentication
+- Password Hashing using bcrypt
+- Protected Routes
+
+---
+
+## 👥 User Management (Admin)
+
+- Create Users
+- Edit Users
+- Delete Users
+- Disable Users
+- Assign Roles
+- Admin & Member Access Control
+
+---
+
+## 📊 Dashboard
+
+- Total Leads
+- Revenue Overview
+- Lead Status Analytics
+- Team Performance
+- Monthly Growth
+- Interactive Charts using Recharts
+
+---
+
+## 📋 Lead Management
+
+- Create Lead
+- Edit Lead
+- Delete Lead
+- Archive / Restore Lead
+- Assign Lead
+- Status Tracking
+- Priority Management
+- Source Management
+- Budget Tracking
+
+---
+
+## 📌 Pipeline
+
+- Drag & Drop Kanban Board
+
+Stages include:
+
+- New
+- Contacted
+- Qualified
+- Proposal
+- Won
+- Lost
+
+---
+
+## 📝 Notes
+
+- Add Notes
+- Edit Notes
+- Delete Notes
+- Notes linked to Leads
+
+---
+
+## 📜 Activity Log
+
+Automatically records:
+
+- Login
+- Lead Creation
+- Lead Update
+- Assignment
+- Status Changes
+- Note Activities
+
+---
+
+## 🔍 Search & Filters
+
+- Global Search
+- Filter by Status
+- Filter by Priority
+- Filter by Source
+- Sorting
+- Pagination
+
+---
+
+## 🌙 UI Features
+
+- Dark Mode
+- Fully Responsive
+- Mobile Friendly
+- Clean Dashboard
+- Modern Design
+
+---
+
+# 🛠 Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| Frontend | React.js, Tailwind CSS, Recharts, Lucide Icons |
-| Backend | Node.js, Express.js |
-| Database | MongoDB (Mongoose) |
-| Auth | JWT, bcrypt.js |
-| Testing | Jest, Supertest |
+|---------|------------|
+| Frontend | React.js |
+| Styling | Tailwind CSS |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Backend | Node.js |
+| Framework | Express.js |
+| Database | MongoDB Atlas |
+| ODM | Mongoose |
+| Authentication | JWT + bcrypt |
+| Testing | Jest + Supertest |
 
-## Features
+---
 
-- **Authentication** — Register, Login, JWT-protected routes, Password hashing
-- **Role-Based Access** — Admin & Member roles with different permissions
-- **Lead Management** — Full CRUD, Status tracking, Priority, Source management
-- **Pipeline View** — Drag-and-drop Kanban board
-- **Dashboard** — Charts, stats, team performance, revenue tracking
-- **Notes** — Add, edit, delete notes on any lead
-- **Activity Log** — Every action is tracked with timestamps
-- **Search & Filters** — Global search, status/priority/source filters, sorting
-- **Pagination** — Server-side pagination (10/25/50/100)
-- **Dark Mode** — Toggle between light and dark themes
-- **Responsive** — Works on desktop, tablet, and mobile
-- **User Management** — Admin can create, edit, disable, delete users
-
-## Quick Start
-
-### Prerequisites
-- Node.js (v16+)
-- MongoDB (local or Atlas)
-
-### Backend Setup
-
-```bash
-cd server
-npm install
-cp .env.example .env  # Configure your MongoDB URI and JWT secret
-node seed.js           # Seed demo data
-npm run dev            # Start dev server on port 5000
-```
-
-### Frontend Setup
-
-```bash
-cd client
-npm install
-npm start              # Start React dev server on port 3000
-```
-
-### Demo Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@leadflow.com | admin123 |
-| Member | member@leadflow.com | member123 |
-
-## API Endpoints
-
-### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/auth/register | Register user |
-| POST | /api/auth/login | Login |
-| GET | /api/auth/me | Get current user |
-
-### Users (Admin)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/users | List all users |
-| POST | /api/users | Create user |
-| PUT | /api/users/:id | Update user |
-| DELETE | /api/users/:id | Delete user |
-
-### Leads
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/leads | List leads (with filters, search, pagination) |
-| POST | /api/leads | Create lead |
-| GET | /api/leads/:id | Get lead detail with notes & activities |
-| PUT | /api/leads/:id | Update lead |
-| DELETE | /api/leads/:id | Delete lead (Admin) |
-| PATCH | /api/leads/status | Update status |
-| PATCH | /api/leads/assign | Assign lead (Admin) |
-| PATCH | /api/leads/:id/archive | Archive/restore lead |
-| GET | /api/leads/pipeline | Pipeline stats |
-
-### Notes
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/notes | Get notes (filter by leadId) |
-| POST | /api/notes | Add note |
-| PUT | /api/notes/:id | Update note |
-| DELETE | /api/notes/:id | Delete note |
-
-### Activities
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/activities | Activity log |
-
-### Dashboard
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/dashboard | Stats, charts, performance data |
-
-## Folder Structure
+# 📂 Project Structure
 
 ```
-LeadFlowCRM/
-├── client/                    # React Frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/        # Layout, Sidebar, TopNav
-│   │   ├── context/           # AuthContext
-│   │   ├── pages/             # Dashboard, Leads, Pipeline, etc.
-│   │   ├── services/          # Axios API service
-│   │   └── utils/             # Helpers, formatters
+LeadFlowCRM
+│
+├── client
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── context
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── utils
+│   │   └── App.js
 │   └── package.json
-├── server/                    # Express Backend
-│   ├── config/                # Database config
-│   ├── controllers/           # Route handlers
-│   ├── middleware/             # Auth, error handler
-│   ├── models/                # Mongoose schemas
-│   ├── routes/                # Express routes
-│   ├── validators/            # Input validation
-│   ├── tests/                 # API tests
-│   ├── seed.js                # Database seeder
-│   └── server.js              # Entry point
-├── docs/                      # Documentation
+│
+├── server
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── validators
+│   ├── tests
+│   ├── seed.js
+│   └── server.js
+│
+├── docs
 │   └── swagger.yaml
+│
 └── README.md
 ```
 
-## Testing
+---
+
+# ⚙ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/yourusername/LeadFlowCRM.git
+
+cd LeadFlowCRM
+```
+
+---
+
+# Backend Setup
 
 ```bash
 cd server
+
+npm install
+```
+
+Create a `.env` file
+
+```env
+PORT=5000
+
+MONGODB_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+CORS_ORIGIN=http://localhost:3000
+```
+
+Seed Demo Data
+
+```bash
+node seed.js
+```
+
+Run Backend
+
+```bash
+npm run dev
+```
+
+Server runs on
+
+```
+http://localhost:5000
+```
+
+---
+
+# Frontend Setup
+
+```bash
+cd client
+
+npm install
+
+npm start
+```
+
+Frontend runs on
+
+```
+http://localhost:3000
+```
+
+---
+
+# 👤 Demo Credentials
+
+## Admin
+
+Email
+
+```
+admin@leadflow.com
+```
+
+Password
+
+```
+admin123
+```
+
+---
+
+## Member
+
+Email
+
+```
+member@leadflow.com
+```
+
+Password
+
+```
+member123
+```
+
+---
+
+# 📡 REST API
+
+## Authentication
+
+| Method | Endpoint |
+|----------|------------------------|
+| POST | /api/auth/register |
+| POST | /api/auth/login |
+| GET | /api/auth/me |
+
+---
+
+## Users
+
+| Method | Endpoint |
+|----------|----------------|
+| GET | /api/users |
+| POST | /api/users |
+| PUT | /api/users/:id |
+| DELETE | /api/users/:id |
+
+---
+
+## Leads
+
+| Method | Endpoint |
+|----------|----------------------------|
+| GET | /api/leads |
+| POST | /api/leads |
+| GET | /api/leads/:id |
+| PUT | /api/leads/:id |
+| DELETE | /api/leads/:id |
+| PATCH | /api/leads/status |
+| PATCH | /api/leads/assign |
+| PATCH | /api/leads/:id/archive |
+| GET | /api/leads/pipeline |
+
+---
+
+## Notes
+
+| Method | Endpoint |
+|----------|----------------|
+| GET | /api/notes |
+| POST | /api/notes |
+| PUT | /api/notes/:id |
+| DELETE | /api/notes/:id |
+
+---
+
+## Dashboard
+
+| Method | Endpoint |
+|----------|----------------|
+| GET | /api/dashboard |
+
+---
+
+## Activities
+
+| Method | Endpoint |
+|----------|----------------|
+| GET | /api/activities |
+
+---
+
+# 🧪 Testing
+
+Run API Tests
+
+```bash
+cd server
+
 npm test
 ```
 
-## Deployment
+Testing Frameworks
 
-### Frontend (Vercel)
-1. Push to GitHub
-2. Import repository in Vercel
-3. Set build command: `npm run build`
-4. Set environment variable: `REACT_APP_API_URL=<your-backend-url>/api`
+- Jest
+- Supertest
 
-### Backend (Render)
-1. Push to GitHub
-2. Create a new Web Service on Render
-3. Set build command: `npm install`
-4. Set start command: `node server.js`
-5. Add environment variables: `MONGODB_URI`, `JWT_SECRET`, `CORS_ORIGIN`
+---
 
-### Database (MongoDB Atlas)
-1. Create a free cluster at mongodb.com
-2. Create a database user
-3. Whitelist your IP
-4. Get the connection string
+# 🚀 Deployment
 
-## Security
+## Frontend
 
-- Helmet for HTTP headers
-- Rate limiting (100 req/15min)
-- CORS configuration
-- bcrypt password hashing (12 rounds)
-- JWT authentication
-- Input validation (express-validator)
-- MongoDB injection protection
-- XSS prevention
+**Vercel**
 
-## Built for Digital Heroes Training Task
+https://lead-flow-crm-amber.vercel.app/login
 
-[digitalheroesco.com](https://digitalheroesco.com)
+---
+
+## Backend
+
+Render
+
+Environment Variables
+
+```env
+MONGODB_URI=
+
+JWT_SECRET=
+
+CORS_ORIGIN=
+```
+
+---
+
+## Database
+
+MongoDB Atlas
+
+- Free M0 Cluster
+- Database User
+- Network Access
+- Connection String
+
+---
+
+# 🔒 Security Features
+
+- JWT Authentication
+- bcrypt Password Hashing
+- Helmet Security Headers
+- Express Rate Limiter
+- CORS Protection
+- MongoDB Injection Protection
+- XSS Protection
+- Input Validation
+- Secure REST APIs
+
+---
+
+# 📈 Future Enhancements
+
+- Email Notifications
+- File Uploads
+- CSV Import & Export
+- Lead Assignment Automation
+- AI Lead Scoring
+- Calendar Integration
+- Google OAuth
+- Slack Notifications
+- Real-time Updates (Socket.io)
+
+---
+
+# 👨‍💻 Developed By
+
+**Dhiraj Kishan Rathod**
+
+Computer Engineering Student
+
+MIT Academy of Engineering (MITAOE), Pune
+
+GitHub: https://github.com/dhiraj-rathod-dev
+
+LinkedIn: https://www.linkedin.com/in/dhiraj-rathod-81a619280/
+
+---
+
+# 📄 License
+
+This project was developed as part of the **Digital Heroes Full Stack Development Qualification Project**.
+
+---
+
+## ⭐ Live Application
+
+### 🌐 https://lead-flow-crm-amber.vercel.app/login
+
+If you like this project, don't forget to ⭐ the repository.
