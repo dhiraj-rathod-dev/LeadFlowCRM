@@ -25,6 +25,31 @@ The application includes secure authentication, role-based access control, lead 
 🔗 https://leadflowcrm-23l8.onrender.com/
 
 ---
+# 🏗 System Design
+
+## Overall System Architecture
+
+This diagram illustrates the complete application architecture including the React frontend, Express.js backend, middleware, controllers, Mongoose models, MongoDB Atlas database, authentication flow, and authorization process.
+
+<p align="center">
+  <img src="./docs/System architecture and flow diagram.png"
+       alt="LeadFlow CRM System Architecture"
+       width="100%">
+</p>
+
+---
+
+## Database Schema
+
+The database schema below shows the relationships between Users, Leads, Notes, and Activities collections along with indexes and lead lifecycle.
+
+<p align="center">
+  <img src="./docs/Lead management system database schema.png"
+       alt="LeadFlow CRM Database Schema"
+       width="100%">
+</p>
+
+---
 
 # ✨ Features
 
