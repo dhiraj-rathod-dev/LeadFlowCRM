@@ -10,13 +10,13 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const links = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/leads', label: 'Leads', icon: UserPlus },
-    { to: '/pipeline', label: 'Pipeline', icon: GitBranch },
+    { to: '/dashboard/leads', label: 'Leads', icon: UserPlus },
+    { to: '/dashboard/pipeline', label: 'Pipeline', icon: GitBranch },
   ];
 
   const adminLinks = [
-    { to: '/users', label: 'Users', icon: Users },
-    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/dashboard/users', label: 'Users', icon: Users },
+    { to: '/dashboard/settings', label: 'Settings', icon: Settings },
   ];
 
   return (

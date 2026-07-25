@@ -28,7 +28,7 @@ const LeadDetail = () => {
       setNotes(res.data.notes);
       setActivities(res.data.activities);
     }).catch(() => {
-      if (!cancelled) { toast.error('Lead not found'); navigate('/leads'); }
+      if (!cancelled) { toast.error('Lead not found'); navigate('/dashboard/leads'); }
     }).finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [id, navigate]);
@@ -81,7 +81,7 @@ const LeadDetail = () => {
 
   const handleDelete = async () => {
     if (!window.confirm('Permanently delete this lead?')) return;
-    try { await api.delete(`/leads/${id}`); toast.success('Lead deleted'); navigate('/leads'); }
+    try { await api.delete(`/leads/${id}`); toast.success('Lead deleted'); navigate('/dashboard/leads'); }
     catch (err) { toast.error('Failed to delete lead'); }
   };
 
@@ -100,7 +100,7 @@ const LeadDetail = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/leads')} className="p-2 hover:bg-gray-100 dark:hover:bg-dark-800 rounded-lg"><ArrowLeft className="w-5 h-5" /></button>
+        <button onClick={() => navigate('/dashboard/leads')} className="p-2 hover:bg-gray-100 dark:hover:bg-dark-800 rounded-lg"><ArrowLeft className="w-5 h-5" /></button>
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{lead.name}</h1>
           <p className="text-gray-500 dark:text-gray-400">{lead.company || 'No company'} &middot; {lead.email}</p>

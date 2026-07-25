@@ -61,7 +61,7 @@ const Pipeline = () => {
               </div>
               <div className="space-y-2 max-h-[calc(100vh-280px)] overflow-y-auto">
                 {statusLeads.map(lead => (
-                  <Link key={lead._id} to={`/leads/${lead._id}`} draggable onDragStart={() => handleDragStart(lead)} className="card p-3 cursor-grab active:cursor-grabbing hover:shadow-md transition-all group block">
+                  <Link key={lead._id} to={`/dashboard/leads/${lead._id}`} draggable onDragStart={() => handleDragStart(lead)} className="card p-3 cursor-grab active:cursor-grabbing hover:shadow-md transition-all group block">
                     <div className="flex items-start gap-2">
                       <GripVertical className="w-4 h-4 text-gray-300 mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">

@@ -12,7 +12,7 @@ const TopNav = ({ onMenuClick }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/leads?search=${encodeURIComponent(searchQuery)}`);
+      navigate(`/dashboard/leads?search=${encodeURIComponent(searchQuery)}`);
       setSearchQuery('');
     }
   };
