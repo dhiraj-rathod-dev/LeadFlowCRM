@@ -16,6 +16,9 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const adminLinks = [
     { to: '/dashboard/users', label: 'Users', icon: Users },
+  ];
+
+  const settingsLinks = [
     { to: '/dashboard/settings', label: 'Settings', icon: Settings },
   ];
 
@@ -57,6 +60,13 @@ const Sidebar = ({ isOpen, onClose }) => {
               ))}
             </>
           )}
+          <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 pt-4">Account</p>
+          {settingsLinks.map(link => (
+            <NavLink key={link.to} to={link.to} className={({ isActive }) => isActive ? 'sidebar-link-active' : 'sidebar-link'} onClick={onClose}>
+              <link.icon className="w-5 h-5" />
+              <span>{link.label}</span>
+            </NavLink>
+          ))}
         </nav>
 
         <div className="px-4 py-4 border-t border-gray-100 dark:border-dark-800">

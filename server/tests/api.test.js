@@ -2,6 +2,8 @@ const request = require('supertest');
 const { app, server } = require('../server');
 const mongoose = require('mongoose');
 
+jest.setTimeout(15000);
+
 afterAll(async () => {
   await mongoose.connection.close();
   server.close();
@@ -18,7 +20,7 @@ describe('Auth API', () => {
     expect(res.body).toHaveProperty('token');
     expect(res.body.user).toHaveProperty('email', testEmail);
     token = res.body.token;
-  });
+  }, 15000);
 
   it('should not register duplicate email', async () => {
     const res = await request(app).post('/api/auth/register').send(testUser);

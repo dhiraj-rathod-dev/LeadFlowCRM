@@ -59,12 +59,13 @@ const Leads = () => {
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
 
   useEffect(() => {
+    if (user?.role !== 'admin') return;
     let cancelled = false;
     api.get('/users?limit=100').then(res => {
       if (!cancelled) setUsers(res.data.users);
     }).catch(() => {});
     return () => { cancelled = true; };
-  }, []);
+  }, [user?.role]);
 
   const updateFilter = (key, value) => {
     const params = new URLSearchParams(searchParams);
